@@ -29,10 +29,15 @@ pm2 stop ecosystem.config.js
 npm install express
 
 # Run the deploy script
-sudo npm run dev
+sudo nohup node index.js &
+
+# start pm2 process
+pm2 restart ecosystem.config.js
 
 # Find the process ID (PID) using port 3000
-PID=$(lsof -t -i:3000)
+
+PID=$(sudo lsof -t -i :3000)
+
 
 # You may want to check if the process is still running after the deploy
 if [ -n "$PID" ]; then
