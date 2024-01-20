@@ -1,15 +1,10 @@
-# Navigate to your project directory
-
-cd /var/project/node-js-docker-cicd
-
+#!/bin/bash
 # Navigate to your project jenkins/workspace/ directory
 cd /var/lib/jenkins/workspace/nodeapp
-
 # Copy files using rsync
-cp * -r /var/project/node-js-docker-cicd
-
+cp -r * /var/nodeapp/node-js-docker-cicd
 # Navigate to your project directory
-cd /var/project/node-js-docker-cicd
+cd /var/nodeapp/node-js-docker-cicd
 
 # Find the process ID (PID) using port 3000
 PID=$(lsof -t -i:3000)
@@ -20,25 +15,16 @@ if [ -n "$PID" ]; then
 fi
 
 # Navigate to your project directory
-cd /var/project/node-js-docker-cicd
-
+cd /var/nodeapp/node-js-docker-cicd
 # stop pm2 process
 pm2 stop ecosystem.config.js
 
 # install node dependency
-npm install express
-
-# Run the deploy script
-sudo nohup node index.js &
-
+npm install
 # start pm2 process
-pm2 restart ecosystem.config.js
-
+pm2 start ecosystem.config.js
 # Find the process ID (PID) using port 3000
-
-PID=$(sudo lsof -t -i :3000)
-
-
+PID=$(lsof -t -i:3000)
 # You may want to check if the process is still running after the deploy
 if [ -n "$PID" ]; then
   echo "The process is still running with PID $PID."
